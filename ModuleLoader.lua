@@ -3,11 +3,11 @@
 --[[
 	[Modulate]
 	
-	v1.0.0
+	v1.0.1
 	
 	A simple experimental module loader class.
 	
-	
+	================================================================================
 	[LICENSE]
 	
 	MIT License
@@ -31,8 +31,9 @@
 	LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 	OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 	SOFTWARE.
+	================================================================================
 	
-	[Documentation]
+	[Documentation] : https://patafouinerie-arch.github.io/Modulate
 --]]
 
 -- ========================================
@@ -73,15 +74,17 @@ local function getRunning()
 	end
 end
 
-function Loader.new()
+function Loader.new(): Loader
 	local self = setmetatable({}, Loader)
+	
 	self.IsServer = getRunning()
 	self.Modules = self:getFolder()
+	self:getModules()
 
 	return self
 end
 
-function Loader:getFolder()
+function Loader:getFolder(): Folder
 	if self.IsServer then
 		return serverScriptService.Services
 	else
@@ -89,22 +92,26 @@ function Loader:getFolder()
 	end
 end
 
-function Loader:getModules()
+function Loader:getModules(): ()
 	for _, module in self.Modules:GetChildren() do
-		if not module:IsA("ModuleScript") or not module["Init"] or table.find(LoadedModules, module.Name) then continue end
+		if not module:IsA("ModuleScript") or table.find(LoadedModules, module.Name) then continue end
 
-		table.insert(module.Name, LoadedModules)
-		local import = self:asyncRequire(module)
+		task.spawn(function()
+			table.insert(LoadedModules, module.Name)
+			local import = self:asyncRequire(module)
 
-		if import ~= nil then
-			import.Init()
-		end
+			if import ~= nil then
+				import.Init()
+			else
+				print("Init function not found in imported module")
+			end
+		end)
 	end
 end
 
-function Loader:asyncRequire(module: ModuleScript)
+function Loader:asyncRequire(module: ModuleScript): {}
 	local success, result = pcall(function()
-		require(module)
+		return require(module)
 	end)
 
 	if not success then
