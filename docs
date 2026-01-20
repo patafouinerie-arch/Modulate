@@ -1,1 +1,504 @@
+import React, { useState } from 'react';
+import { Code, Book, Zap, Shield, Github, Menu, X, ChevronRight, Copy, Check } from 'lucide-react';
 
+const ModulateDocs = () => {
+  const [activeTab, setActiveTab] = useState('home');
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [copiedCode, setCopiedCode] = useState(null);
+
+  const copyToClipboard = (code, id) => {
+    navigator.clipboard.writeText(code);
+    setCopiedCode(id);
+    setTimeout(() => setCopiedCode(null), 2000);
+  };
+
+  const navigation = [
+    { id: 'home', label: 'Home', icon: Zap },
+    { id: 'getting-started', label: 'Getting Started', icon: Book },
+    { id: 'api', label: 'API Reference', icon: Code },
+    { id: 'examples', label: 'Examples', icon: ChevronRight },
+  ];
+
+  const CodeBlock = ({ code, language = 'lua', id }) => (
+    <div className="relative group">
+      <div className="absolute right-2 top-2 z-10">
+        <button
+          onClick={() => copyToClipboard(code, id)}
+          className="p-2 bg-gray-700 hover:bg-gray-600 rounded-lg transition-colors opacity-0 group-hover:opacity-100"
+        >
+          {copiedCode === id ? (
+            <Check className="w-4 h-4 text-green-400" />
+          ) : (
+            <Copy className="w-4 h-4 text-gray-300" />
+          )}
+        </button>
+      </div>
+      <pre className="bg-gray-900 rounded-lg p-4 overflow-x-auto">
+        <code className="text-sm text-gray-100 font-mono">{code}</code>
+      </pre>
+    </div>
+  );
+
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900">
+      {/* Header */}
+      <header className="bg-black/30 backdrop-blur-md border-b border-purple-500/20 sticky top-0 z-50">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex justify-between items-center py-4">
+            <div className="flex items-center space-x-3">
+              <div className="w-10 h-10 bg-gradient-to-br from-purple-500 to-pink-500 rounded-lg flex items-center justify-center">
+                <Zap className="w-6 h-6 text-white" />
+              </div>
+              <div>
+                <h1 className="text-2xl font-bold text-white">Modulate</h1>
+                <p className="text-xs text-purple-300">v1.0.0</p>
+              </div>
+            </div>
+            
+            <button
+              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+              className="lg:hidden p-2 text-white"
+            >
+              {mobileMenuOpen ? <X /> : <Menu />}
+            </button>
+
+            <nav className="hidden lg:flex space-x-1">
+              {navigation.map(({ id, label, icon: Icon }) => (
+                <button
+                  key={id}
+                  onClick={() => setActiveTab(id)}
+                  className={`px-4 py-2 rounded-lg transition-all flex items-center space-x-2 ${
+                    activeTab === id
+                      ? 'bg-purple-600 text-white'
+                      : 'text-gray-300 hover:bg-white/10'
+                  }`}
+                >
+                  <Icon className="w-4 h-4" />
+                  <span>{label}</span>
+                </button>
+              ))}
+            </nav>
+          </div>
+        </div>
+
+        {/* Mobile Menu */}
+        {mobileMenuOpen && (
+          <div className="lg:hidden bg-black/50 backdrop-blur-md border-t border-purple-500/20">
+            <nav className="px-4 py-2 space-y-1">
+              {navigation.map(({ id, label, icon: Icon }) => (
+                <button
+                  key={id}
+                  onClick={() => {
+                    setActiveTab(id);
+                    setMobileMenuOpen(false);
+                  }}
+                  className={`w-full px-4 py-3 rounded-lg transition-all flex items-center space-x-2 ${
+                    activeTab === id
+                      ? 'bg-purple-600 text-white'
+                      : 'text-gray-300 hover:bg-white/10'
+                  }`}
+                >
+                  <Icon className="w-4 h-4" />
+                  <span>{label}</span>
+                </button>
+              ))}
+            </nav>
+          </div>
+        )}
+      </header>
+
+      {/* Content */}
+      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        {activeTab === 'home' && (
+          <div className="space-y-12">
+            {/* Hero Section */}
+            <div className="text-center space-y-6">
+              <div className="inline-block">
+                <div className="w-24 h-24 bg-gradient-to-br from-purple-500 to-pink-500 rounded-2xl flex items-center justify-center mx-auto mb-6 animate-pulse">
+                  <Zap className="w-12 h-12 text-white" />
+                </div>
+              </div>
+              <h1 className="text-5xl md:text-6xl font-bold text-white">
+                Modulate
+              </h1>
+              <p className="text-xl md:text-2xl text-purple-200 max-w-3xl mx-auto">
+                A simple, experimental module loader for Roblox
+              </p>
+              <div className="flex flex-wrap gap-4 justify-center pt-4">
+                <button
+                  onClick={() => setActiveTab('getting-started')}
+                  className="px-8 py-3 bg-gradient-to-r from-purple-600 to-pink-600 text-white rounded-lg font-semibold hover:shadow-lg hover:shadow-purple-500/50 transition-all"
+                >
+                  Get Started
+                </button>
+                <a
+                  href="https://github.com/yourusername/modulate"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="px-8 py-3 bg-white/10 backdrop-blur-sm text-white rounded-lg font-semibold hover:bg-white/20 transition-all flex items-center space-x-2"
+                >
+                  <Github className="w-5 h-5" />
+                  <span>View on GitHub</span>
+                </a>
+              </div>
+            </div>
+
+            {/* Features */}
+            <div className="grid md:grid-cols-3 gap-6 pt-8">
+              {[
+                {
+                  icon: Zap,
+                  title: 'Fast & Lightweight',
+                  description: 'Minimal overhead with optimized module loading'
+                },
+                {
+                  icon: Shield,
+                  title: 'Type Safe',
+                  description: 'Full TypeScript-style type definitions included'
+                },
+                {
+                  icon: Code,
+                  title: 'Simple API',
+                  description: 'Easy to use with clear, intuitive methods'
+                }
+              ].map((feature, i) => (
+                <div key={i} className="bg-white/5 backdrop-blur-sm rounded-xl p-6 border border-purple-500/20 hover:border-purple-500/40 transition-all">
+                  <feature.icon className="w-12 h-12 text-purple-400 mb-4" />
+                  <h3 className="text-xl font-semibold text-white mb-2">{feature.title}</h3>
+                  <p className="text-gray-300">{feature.description}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {activeTab === 'getting-started' && (
+          <div className="prose prose-invert max-w-4xl space-y-8">
+            <div>
+              <h2 className="text-4xl font-bold text-white mb-4">Getting Started</h2>
+              <p className="text-gray-300 text-lg">
+                Learn how to integrate Modulate into your Roblox project in minutes.
+              </p>
+            </div>
+
+            <div className="bg-white/5 backdrop-blur-sm rounded-xl p-6 border border-purple-500/20">
+              <h3 className="text-2xl font-semibold text-white mb-4">Installation</h3>
+              <p className="text-gray-300 mb-4">
+                Copy the Modulate module into your project:
+              </p>
+              <ol className="list-decimal list-inside space-y-2 text-gray-300">
+                <li>Download or copy the Modulate.lua file</li>
+                <li>Place it in ReplicatedStorage or ServerScriptService</li>
+                <li>Create a Services folder in ServerScriptService</li>
+                <li>Create a Shared/Modules folder in ReplicatedStorage</li>
+              </ol>
+            </div>
+
+            <div className="bg-white/5 backdrop-blur-sm rounded-xl p-6 border border-purple-500/20">
+              <h3 className="text-2xl font-semibold text-white mb-4">Basic Usage</h3>
+              <p className="text-gray-300 mb-4">
+                Initialize the loader and load your modules:
+              </p>
+              <CodeBlock
+                id="basic-usage"
+                code={`local Modulate = require(path.to.Modulate)
+
+-- Create a new loader instance
+local loader = Modulate.new()
+
+-- Load all modules with Init functions
+loader:getModules()
+
+print("All modules loaded!")`}
+              />
+            </div>
+
+            <div className="bg-white/5 backdrop-blur-sm rounded-xl p-6 border border-purple-500/20">
+              <h3 className="text-2xl font-semibold text-white mb-4">Project Structure</h3>
+              <p className="text-gray-300 mb-4">
+                Organize your modules like this:
+              </p>
+              <CodeBlock
+                id="structure"
+                code={`ServerScriptService/
+  └── Services/
+      ├── DataService.lua
+      ├── PlayerService.lua
+      └── GameService.lua
+
+ReplicatedStorage/
+  └── Shared/
+      └── Modules/
+          ├── UIController.lua
+          ├── SoundManager.lua
+          └── Utilities.lua`}
+              />
+            </div>
+          </div>
+        )}
+
+        {activeTab === 'api' && (
+          <div className="space-y-8 max-w-4xl">
+            <div>
+              <h2 className="text-4xl font-bold text-white mb-4">API Reference</h2>
+              <p className="text-gray-300 text-lg">
+                Complete API documentation for Modulate.
+              </p>
+            </div>
+
+            {/* Types */}
+            <div className="bg-white/5 backdrop-blur-sm rounded-xl p-6 border border-purple-500/20">
+              <h3 className="text-2xl font-semibold text-white mb-4 flex items-center">
+                <Code className="w-6 h-6 mr-2 text-purple-400" />
+                Types
+              </h3>
+              <CodeBlock
+                id="types"
+                code={`export type Loader = {
+    new: () -> Loader,
+    getFolder: (Loader) -> Folder,
+    getModules: (Loader) -> (),
+    asyncRequire: (Loader) -> {}
+}`}
+              />
+            </div>
+
+            {/* Constructor */}
+            <div className="bg-white/5 backdrop-blur-sm rounded-xl p-6 border border-purple-500/20">
+              <h3 className="text-2xl font-semibold text-white mb-4">Loader.new()</h3>
+              <p className="text-gray-300 mb-4">Creates a new Loader instance.</p>
+              <div className="space-y-4">
+                <div>
+                  <h4 className="text-lg font-semibold text-purple-300 mb-2">Returns</h4>
+                  <p className="text-gray-300"><code className="bg-gray-800 px-2 py-1 rounded">Loader</code> - A new loader instance</p>
+                </div>
+                <div>
+                  <h4 className="text-lg font-semibold text-purple-300 mb-2">Example</h4>
+                  <CodeBlock
+                    id="constructor"
+                    code={`local loader = Modulate.new()`}
+                  />
+                </div>
+              </div>
+            </div>
+
+            {/* getFolder */}
+            <div className="bg-white/5 backdrop-blur-sm rounded-xl p-6 border border-purple-500/20">
+              <h3 className="text-2xl font-semibold text-white mb-4">getFolder()</h3>
+              <p className="text-gray-300 mb-4">
+                Returns the appropriate folder based on the current context (server or client).
+              </p>
+              <div className="space-y-4">
+                <div>
+                  <h4 className="text-lg font-semibold text-purple-300 mb-2">Returns</h4>
+                  <p className="text-gray-300"><code className="bg-gray-800 px-2 py-1 rounded">Folder</code> - ServerScriptService.Services (server) or ReplicatedStorage.Shared.Modules (client)</p>
+                </div>
+                <div>
+                  <h4 className="text-lg font-semibold text-purple-300 mb-2">Example</h4>
+                  <CodeBlock
+                    id="getfolder"
+                    code={`local folder = loader:getFolder()
+print(folder.Name) -- "Services" or "Modules"`}
+                  />
+                </div>
+              </div>
+            </div>
+
+            {/* getModules */}
+            <div className="bg-white/5 backdrop-blur-sm rounded-xl p-6 border border-purple-500/20">
+              <h3 className="text-2xl font-semibold text-white mb-4">getModules()</h3>
+              <p className="text-gray-300 mb-4">
+                Loads all modules in the designated folder that have an Init function.
+              </p>
+              <div className="space-y-4">
+                <div>
+                  <h4 className="text-lg font-semibold text-purple-300 mb-2">Behavior</h4>
+                  <ul className="list-disc list-inside space-y-2 text-gray-300">
+                    <li>Skips non-ModuleScript instances</li>
+                    <li>Only loads modules with an Init function</li>
+                    <li>Prevents duplicate loading</li>
+                    <li>Calls Init() on successfully loaded modules</li>
+                  </ul>
+                </div>
+                <div>
+                  <h4 className="text-lg font-semibold text-purple-300 mb-2">Example</h4>
+                  <CodeBlock
+                    id="getmodules"
+                    code={`loader:getModules()
+-- All modules with Init() are now loaded and initialized`}
+                  />
+                </div>
+              </div>
+            </div>
+
+            {/* asyncRequire */}
+            <div className="bg-white/5 backdrop-blur-sm rounded-xl p-6 border border-purple-500/20">
+              <h3 className="text-2xl font-semibold text-white mb-4">asyncRequire()</h3>
+              <p className="text-gray-300 mb-4">
+                Safely requires a module with error handling.
+              </p>
+              <div className="space-y-4">
+                <div>
+                  <h4 className="text-lg font-semibold text-purple-300 mb-2">Parameters</h4>
+                  <p className="text-gray-300"><code className="bg-gray-800 px-2 py-1 rounded">module: ModuleScript</code> - The module to require</p>
+                </div>
+                <div>
+                  <h4 className="text-lg font-semibold text-purple-300 mb-2">Returns</h4>
+                  <p className="text-gray-300"><code className="bg-gray-800 px-2 py-1 rounded">table | nil</code> - The required module, or nil on error</p>
+                </div>
+                <div>
+                  <h4 className="text-lg font-semibold text-purple-300 mb-2">Example</h4>
+                  <CodeBlock
+                    id="asyncrequire"
+                    code={`local myModule = loader:asyncRequire(moduleScript)
+if myModule then
+    myModule.DoSomething()
+end`}
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {activeTab === 'examples' && (
+          <div className="space-y-8 max-w-4xl">
+            <div>
+              <h2 className="text-4xl font-bold text-white mb-4">Examples</h2>
+              <p className="text-gray-300 text-lg">
+                Practical examples to get you started quickly.
+              </p>
+            </div>
+
+            {/* Creating a Module */}
+            <div className="bg-white/5 backdrop-blur-sm rounded-xl p-6 border border-purple-500/20">
+              <h3 className="text-2xl font-semibold text-white mb-4">Creating a Module</h3>
+              <p className="text-gray-300 mb-4">
+                Create a module that will be auto-loaded by Modulate:
+              </p>
+              <CodeBlock
+                id="example-module"
+                code={`-- DataService.lua
+local DataService = {}
+
+function DataService.Init()
+    print("DataService initialized!")
+    DataService:LoadPlayerData()
+end
+
+function DataService:LoadPlayerData()
+    -- Your data loading logic
+end
+
+function DataService:SavePlayerData(player, data)
+    -- Your data saving logic
+end
+
+return DataService`}
+              />
+            </div>
+
+            {/* Server-Side Setup */}
+            <div className="bg-white/5 backdrop-blur-sm rounded-xl p-6 border border-purple-500/20">
+              <h3 className="text-2xl font-semibold text-white mb-4">Server-Side Setup</h3>
+              <p className="text-gray-300 mb-4">
+                Initialize Modulate on the server:
+              </p>
+              <CodeBlock
+                id="server-setup"
+                code={`-- ServerScriptService > MainScript
+local Modulate = require(game.ReplicatedStorage.Modulate)
+
+local loader = Modulate.new()
+loader:getModules()
+
+print("Server modules loaded!")`}
+              />
+            </div>
+
+            {/* Client-Side Setup */}
+            <div className="bg-white/5 backdrop-blur-sm rounded-xl p-6 border border-purple-500/20">
+              <h3 className="text-2xl font-semibold text-white mb-4">Client-Side Setup</h3>
+              <p className="text-gray-300 mb-4">
+                Initialize Modulate on the client:
+              </p>
+              <CodeBlock
+                id="client-setup"
+                code={`-- StarterPlayer > StarterPlayerScripts > ClientInit
+local Modulate = require(game.ReplicatedStorage.Modulate)
+
+local loader = Modulate.new()
+loader:getModules()
+
+print("Client modules loaded!")`}
+              />
+            </div>
+
+            {/* Advanced Example */}
+            <div className="bg-white/5 backdrop-blur-sm rounded-xl p-6 border border-purple-500/20">
+              <h3 className="text-2xl font-semibold text-white mb-4">Module with Dependencies</h3>
+              <p className="text-gray-300 mb-4">
+                Create a module that depends on other modules:
+              </p>
+              <CodeBlock
+                id="advanced"
+                code={`-- PlayerService.lua
+local PlayerService = {}
+
+local DataService -- Will be set in Init
+
+function PlayerService.Init()
+    -- Load dependency
+    DataService = require(script.Parent.DataService)
+    
+    -- Connect events
+    game.Players.PlayerAdded:Connect(PlayerService.OnPlayerAdded)
+    game.Players.PlayerRemoving:Connect(PlayerService.OnPlayerRemoving)
+    
+    print("PlayerService initialized!")
+end
+
+function PlayerService.OnPlayerAdded(player)
+    local data = DataService:LoadPlayerData(player)
+    -- Handle player join
+end
+
+function PlayerService.OnPlayerRemoving(player)
+    DataService:SavePlayerData(player)
+    -- Handle player leave
+end
+
+return PlayerService`}
+              />
+            </div>
+          </div>
+        )}
+      </main>
+
+      {/* Footer */}
+      <footer className="bg-black/30 backdrop-blur-md border-t border-purple-500/20 mt-20">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+          <div className="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
+            <div className="text-gray-400 text-sm">
+              © 2026 Modulate. Released under MIT License.
+            </div>
+            <div className="flex items-center space-x-6">
+              <a href="https://github.com/yourusername/modulate" className="text-gray-400 hover:text-white transition-colors flex items-center space-x-2">
+                <Github className="w-5 h-5" />
+                <span>GitHub</span>
+              </a>
+              <a href="https://github.com/yourusername/modulate/issues" className="text-gray-400 hover:text-white transition-colors">
+                Issues
+              </a>
+              <a href="https://github.com/yourusername/modulate/blob/main/LICENSE" className="text-gray-400 hover:text-white transition-colors">
+                License
+              </a>
+            </div>
+          </div>
+        </div>
+      </footer>
+    </div>
+  );
+};
+
+export default ModulateDocs;
