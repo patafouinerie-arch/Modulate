@@ -7,7 +7,7 @@ title: Home
 
 **A simple experimental module loader for Roblox**
 
-Version 1.0.0 | [View on GitHub](https://github.com/patafouinerie-arch/Modulate)
+Version 1.0.1 | [View on GitHub](https://github.com/patafouinerie-arch/Modulate)
 
 ---
 
