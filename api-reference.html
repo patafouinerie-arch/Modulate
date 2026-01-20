@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>API Reference - Modulate</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header class="site-header">
+        <div class="container">
+            <div class="header-content">
+                <h1 class="site-title">
+                    <a href="index.html">⚡ Modulate</a>
+                </h1>
+                <nav class="site-nav">
+                    <a href="index.html">Home</a>
+                    <a href="getting-started.html">Getting Started</a>
+                    <a href="api-reference.html" class="active">API Reference</a>
+                    <a href="examples.html">Examples</a>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <main class="main-content">
+        <div class="container">
+            <h1>API Reference</h1>
+            <p>Complete API documentation for Modulate.</p>
+
+            <hr>
+
+            <h2>Types</h2>
+            <pre><code>export type Loader = {
+    new: () -> Loader,
+    getFolder: (Loader) -> Folder,
+    getModules: (Loader) -> (),
+    asyncRequire: (Loader) -> {}
+}</code></pre>
+
+            <hr>
+
+            <h2>Constructor</h2>
+
+            <div class="api-section">
+                <h3><code>Loader.new()</code></h3>
+                <p>Creates a new Loader instance.</p>
+                
+                <h4>Returns</h4>
+                <p><code>Loader</code> - A new loader instance</p>
+                
+                <h4>Example</h4>
+                <pre><code>local loader = Modulate.new()</code></pre>
+            </div>
+
+            <hr>
+
+            <h2>Methods</h2>
+
+            <div class="api-section">
+                <h3><code>getFolder()</code></h3>
+                <p>Returns the appropriate folder based on the current context (server or client).</p>
+                
+                <h4>Returns</h4>
+                <p><code>Folder</code></p>
+                <ul>
+                    <li><code>ServerScriptService.Services</code> on the server</li>
+                    <li><code>ReplicatedStorage.Shared.Modules</code> on the client</li>
+                </ul>
+                
+                <h4>Example</h4>
+                <pre><code>local folder = loader:getFolder()
+print(folder.Name) -- "Services" or "Modules"</code></pre>
+            </div>
+
+            <hr>
+
+            <div class="api-section">
+                <h3><code>getModules()</code></h3>
+                <p>Loads all modules in the designated folder that have an <code>Init</code> function.</p>
+                
+                <h4>Behavior</h4>
+                <ul>
+                    <li>Skips non-ModuleScript instances</li>
+                    <li>Only loads modules with an <code>Init</code> function</li>
+                    <li>Prevents duplicate loading</li>
+                    <li>Calls <code>Init()</code> on successfully loaded modules</li>
+                </ul>
+                
+                <h4>Example</h4>
+                <pre><code>loader:getModules()
+-- All modules with Init() are now loaded and initialized</code></pre>
+            </div>
+
+            <hr>
+
+            <div class="api-section">
+                <h3><code>asyncRequire(module)</code></h3>
+                <p>Safely requires a module with error handling.</p>
+                
+                <h4>Parameters</h4>
+                <p><code>module: ModuleScript</code> - The module to require</p>
+                
+                <h4>Returns</h4>
+                <p><code>table | nil</code></p>
+                <ul>
+                    <li>The required module on success</li>
+                    <li><code>nil</code> on error (error is printed to output)</li>
+                </ul>
+                
+                <h4>Example</h4>
+                <pre><code>local myModule = loader:asyncRequire(moduleScript)
+if myModule then
+    myModule.DoSomething()
+end</code></pre>
+            </div>
+
+            <hr>
+
+            <h2>Internal Properties</h2>
+
+            <div class="api-section">
+                <h3><code>IsServer</code></h3>
+                <p><strong>Type:</strong> <code>boolean</code></p>
+                <p>Indicates whether the loader is running on the server (<code>true</code>) or client (<code>false</code>).</p>
+            </div>
+
+            <div class="api-section">
+                <h3><code>Modules</code></h3>
+                <p><strong>Type:</strong> <code>Folder</code></p>
+                <p>Reference to the folder containing modules to load.</p>
+            </div>
+
+            <hr>
+
+            <div class="nav-buttons">
+                <a href="getting-started.html" class="btn btn-secondary">← Getting Started</a>
+                <a href="examples.html" class="btn btn-primary">Examples →</a>
+            </div>
+        </div>
+    </main>
+
+    <footer class="site-footer">
+        <div class="container">
+            <p>
+                © 2026 Modulate | 
+                <a href="https://github.com/yourusername/modulate" target="_blank">GitHub</a> | 
+                <a href="https://github.com/yourusername/modulate/blob/main/LICENSE" target="_blank">MIT License</a>
+            </p>
+        </div>
+    </footer>
+</body>
+</html>
