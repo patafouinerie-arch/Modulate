@@ -1,0 +1,28 @@
+title: Modulate
+description: A simple experimental module loader for Roblox
+theme: jekyll-theme-cayman
+baseurl: ""
+url: "https://yourusername.github.io"
+
+# Navigation
+navigation:
+  - title: Home
+    url: /
+  - title: Getting Started
+    url: /docs/getting-started
+  - title: API Reference
+    url: /docs/api-reference
+  - title: Examples
+    url: /docs/examples
+
+# GitHub
+repository: yourusername/modulate
+github_username: yourusername
+
+# Build settings
+markdown: kramdown
+highlighter: rouge
+
+plugins:
+  - jekyll-seo-tag
+  - jekyll-sitemap
