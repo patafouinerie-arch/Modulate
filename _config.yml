@@ -2,7 +2,7 @@ title: Modulate
 description: A simple experimental module loader for Roblox
 theme: jekyll-theme-cayman
 baseurl: ""
-url: "https://yourusername.github.io"
+url: "https://patafouinerie-arch.github.io"
 
 # Navigation
 navigation:
@@ -16,8 +16,8 @@ navigation:
     url: /docs/examples
 
 # GitHub
-repository: yourusername/modulate
-github_username: yourusername
+repository: https://github.com/patafouinerie-arch/Modulate
+github_username: patafouinerie-arch
 
 # Build settings
 markdown: kramdown
