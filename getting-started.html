@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Getting Started - Modulate</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header class="site-header">
+        <div class="container">
+            <div class="header-content">
+                <h1 class="site-title">
+                    <a href="index.html">⚡ Modulate</a>
+                </h1>
+                <nav class="site-nav">
+                    <a href="index.html">Home</a>
+                    <a href="getting-started.html" class="active">Getting Started</a>
+                    <a href="api-reference.html">API Reference</a>
+                    <a href="examples.html">Examples</a>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <main class="main-content">
+        <div class="container">
+            <h1>Getting Started</h1>
+            <p>Learn how to integrate Modulate into your Roblox project in minutes.</p>
+
+            <hr>
+
+            <h2>Installation</h2>
+            <ol>
+                <li>Download or copy the <code>Modulate.lua</code> file</li>
+                <li>Place it in <code>ReplicatedStorage</code> or <code>ServerScriptService</code></li>
+                <li>Create a <code>Services</code> folder in <code>ServerScriptService</code></li>
+                <li>Create a <code>Shared/Modules</code> folder in <code>ReplicatedStorage</code></li>
+            </ol>
+
+            <hr>
+
+            <h2>Project Structure</h2>
+            <p>Organize your modules like this:</p>
+            <pre><code>ServerScriptService/
+  └── Services/
+      ├── DataService.lua
+      ├── PlayerService.lua
+      └── GameService.lua
+
+ReplicatedStorage/
+  └── Shared/
+      └── Modules/
+          ├── UIController.lua
+          ├── SoundManager.lua
+          └── Utilities.lua</code></pre>
+
+            <hr>
+
+            <h2>Basic Usage</h2>
+
+            <h3>Server-Side Setup</h3>
+            <p>Create a script in <code>ServerScriptService</code>:</p>
+            <pre><code>-- ServerScriptService > MainScript
+local Modulate = require(game.ReplicatedStorage.Modulate)
+
+local loader = Modulate.new()
+loader:getModules()
+
+print("Server modules loaded!")</code></pre>
+
+            <h3>Client-Side Setup</h3>
+            <p>Create a script in <code>StarterPlayer > StarterPlayerScripts</code>:</p>
+            <pre><code>-- StarterPlayer > StarterPlayerScripts > ClientInit
+local Modulate = require(game.ReplicatedStorage.Modulate)
+
+local loader = Modulate.new()
+loader:getModules()
+
+print("Client modules loaded!")</code></pre>
+
+            <hr>
+
+            <h2>Creating Your First Module</h2>
+            <p>Modules must have an <code>Init</code> function to be loaded by Modulate:</p>
+            <pre><code>-- DataService.lua
+local DataService = {}
+
+function DataService.Init()
+    print("DataService initialized!")
+    DataService:Setup()
+end
+
+function DataService:Setup()
+    -- Your initialization logic here
+end
+
+function DataService:LoadPlayerData(player)
+    -- Your data loading logic
+end
+
+return DataService</code></pre>
+
+            <hr>
+
+            <h2>Next Steps</h2>
+            <ul>
+                <li><a href="api-reference.html">API Reference</a> - Learn about all available methods</li>
+                <li><a href="examples.html">Examples</a> - See practical implementation patterns</li>
+            </ul>
+
+            <div class="nav-buttons">
+                <a href="index.html" class="btn btn-secondary">← Back to Home</a>
+                <a href="api-reference.html" class="btn btn-primary">API Reference →</a>
+            </div>
+        </div>
+    </main>
+
+    <footer class="site-footer">
+        <div class="container">
+            <p>
+                © 2026 Modulate | 
+                <a href="https://github.com/yourusername/modulate" target="_blank">GitHub</a> | 
+                <a href="https://github.com/yourusername/modulate/blob/main/LICENSE" target="_blank">MIT License</a>
+            </p>
+        </div>
+    </footer>
+</body>
+</html>
